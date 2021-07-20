@@ -24,27 +24,29 @@ def generate_unique_code():
 
 
 class Item(models.Model):
-    name        = models.CharField(max_length=80, unique=True)
+    name        = models.CharField(max_length=80)
     quantity    = models.FloatField(default=1)
-
+    units       = models.CharField(max_length=30)
 
     # How to ask for bottles, boxes, etc?
-    class Unit(models.TextChoices):
-        MILLILITERS = 'mL', _('milliliters'),
-        LITERS = 'L', _('liters'),
-        GRAMS = 'g', _('grams'),
-        KILOGRAMS = 'kg', _('kilograms'),
-        OUNCES = 'oz', _('ounces'),
-        POUNDS = 'lbs', _('pounds'),
-        NONE = '', _(''),
+    # I can't make enums work so I'm just gonna be lazy
+    # class Unit(models.TextChoices):
+    #     MILLILITERS = 'mL', _('milliliters'),
+    #     LITERS = 'L', _('liters'),
+    #     GRAMS = 'g', _('grams'),
+    #     KILOGRAMS = 'kg', _('kilograms'),
+    #     OUNCES = 'oz', _('ounces'),
+    #     POUNDS = 'lbs', _('pounds'),
+    #     NONE = '', _(''),
 
-    units = models.CharField(
-        max_length=20,
-        choices=Unit.choices,
-        default=Unit.NONE
-    )
+    # units = models.CharField(
+    #     max_length=20,
+    #     choices=Unit.choices,
+    #     default=Unit.NONE
+    # )
 
 
 class Groceries(models.Model):
     title = models.CharField(max_length=80, default="Our Grocery List")
     code = models.CharField(max_length=8, default="", unique=True)
+

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'grocery.apps.GroceryConfig',
     'frontend.apps.FrontendConfig',
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
