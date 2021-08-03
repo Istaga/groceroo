@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import GroupJoinPage from './GroupJoinPage';
 import CreateGroupPage from './CreateGroupPage';
-//import TryApolloPage from './TryApolloPage.tsx';
+import TryApolloPage from './TryApolloPage.js';
 
 import { BrowserRouter as Router, Route, NavLink, Link, Switch, Redirect } from 'react-router-dom'
 
@@ -15,6 +15,7 @@ export default class HomePage extends Component {
                     <Route exact path='/'><p>Welcome Home.</p></Route>
                     <Route path='/create' component={CreateGroupPage} />
                     <Route path='/join' component={GroupJoinPage} />
+                    <Route path='/try' component={TryApolloPage} />
                 </Switch>
             </Router>
         )
