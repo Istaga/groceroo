@@ -15,7 +15,7 @@ export default class HomePage extends Component {
                     <Route exact path='/'><p>Welcome Home.</p></Route>
                     <Route path='/create' component={CreateGroupPage} />
                     <Route path='/join' component={GroupJoinPage} />
-                    <Route path='/try' component={TryApolloPage} />
+                    <Route path='/try'><TryApolloPage name="Ass" /></Route>
                 </Switch>
             </Router>
         )

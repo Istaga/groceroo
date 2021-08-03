@@ -5,8 +5,13 @@ import {
     ApolloProvider,
     useQuery,
     gql,
-    createHttpLink
+    createHttpLink,
+    fromPromise
 } from "@apollo/client";
+
+import { Button } from '@material-ui/core';
+
+import { ALL_ROOMS_QUERY, GET_ROOM_QUERY } from '../gql/Queries';
 
 const link = createHttpLink({
     uri: 'api/gql',
@@ -18,18 +23,18 @@ const client = new ApolloClient({
     cache: new InMemoryCache()
 });
 
-const pleaseworkquery = gql`
-        query showGroceryLists {
-            allGroceries{
-            id
-            title
-            code
-            }
-        }
-    `
+// const pleaseworkquery = gql`
+//         query showGroceryLists {
+//             allGroceries{
+//             id
+//             title
+//             code
+//             }
+//         }
+//     `
 
 function GroceryTings() {
-    const { loading, error, data } = useQuery(pleaseworkquery);
+    const { loading, error, data } = useQuery(ALL_ROOMS_QUERY);
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
     if (data === undefined | data == null ) return <p>Oh no!</p>;
@@ -40,19 +45,32 @@ function GroceryTings() {
         </p>
       </div>
     ));
-  }
+}
 
-export class TryApolloPage extends Component {
+function SpecificTings(props) {
+    const { loading, error, data } = useQuery(GET_ROOM_QUERY, 
+        {
+            variables: { code: props.room_code }
+        });
+    if (loading) return <p>Loading...</p>;
+    if (error) return <p>Error :(</p>;
+    if (data === undefined | data == null ) return <p>Oh no!</p>;
+    return (
+        <div>
+            Code is: { data.pacificRoom.code }
+            ===
+            title is : { data.pacificRoom.title }
+        </div>
+    )
+}
 
-
-
-    render() {
-        return (
+function TryApolloPage(props) {
+    return (
             <ApolloProvider client={client}>
-                <GroceryTings /> 
+                <GroceryTings />
+                <SpecificTings room_code="JAAAHN" />
             </ApolloProvider>
-        )
-    }
+    );
 }
 
 export default TryApolloPage
