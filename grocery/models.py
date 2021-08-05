@@ -13,7 +13,7 @@ import random
 
 
 def generate_unique_code():
-    length=6
+    length=8
 
     while True:
         code = ''.join(random.choices(string.ascii_uppercase, k=length))
@@ -47,6 +47,8 @@ class Item(models.Model):
 
 
 class Groceries(models.Model):
+    min_length_code = 8
     title = models.CharField(max_length=80, default="Our Grocery List")
-    code = models.CharField(max_length=8, default="", unique=True)
+    code = models.CharField(max_length=min_length_code, default=generate_unique_code, unique=True)
+
 

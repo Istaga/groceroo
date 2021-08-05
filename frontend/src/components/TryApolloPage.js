@@ -1,27 +1,9 @@
 import React, { Component } from 'react'
 import {
-    ApolloClient,
-    InMemoryCache,
-    ApolloProvider,
     useQuery,
-    gql,
-    createHttpLink,
-    fromPromise
 } from "@apollo/client";
 
-import { Button } from '@material-ui/core';
-
 import { ALL_ROOMS_QUERY, GET_ROOM_QUERY } from '../gql/Queries';
-
-const link = createHttpLink({
-    uri: 'api/gql',
-    credentials: 'same-origin'
-});
-  
-const client = new ApolloClient({
-    link,
-    cache: new InMemoryCache()
-});
 
 // const pleaseworkquery = gql`
 //         query showGroceryLists {
@@ -66,10 +48,10 @@ function SpecificTings(props) {
 
 function TryApolloPage(props) {
     return (
-            <ApolloProvider client={client}>
-                <GroceryTings />
-                <SpecificTings room_code="JAAAHN" />
-            </ApolloProvider>
+        <div>
+            <GroceryTings />
+            <SpecificTings room_code="JAAAHN" />
+        </div>
     );
 }
 

@@ -1,6 +1,28 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import HomePage from './HomePage';
+import { Box, Container } from '@material-ui/core';
+
+import {
+    ApolloClient,
+    InMemoryCache,
+    ApolloProvider,
+    useQuery,
+    gql,
+    createHttpLink,
+    fromPromise
+} from "@apollo/client";
+
+const link = createHttpLink({
+    uri: 'api/gql',
+    credentials: 'same-origin'
+});
+  
+const client = new ApolloClient({
+    link,
+    cache: new InMemoryCache()
+});
+
 
 export default class App extends Component{
     constructor(props){
@@ -9,12 +31,12 @@ export default class App extends Component{
 
     render(){
         return (
-            <div>
+            <Container>
                 <HomePage />
-            </div>
+            </Container>
         )
     }
 }
 
 const appDiv = document.getElementById("app");
-render(<App />, appDiv);
+render( <ApolloProvider client={client}><App /></ApolloProvider>, appDiv);

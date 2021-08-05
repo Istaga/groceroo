@@ -1,15 +1,13 @@
 import graphene
 from graphene_django import DjangoObjectType, DjangoListField
-from .models import Groceries, Item
+from .models import Groceries, Item, generate_unique_code
 
 class GroceriesType(DjangoObjectType):
-
     class Meta:
         model = Groceries
         fields = ("id", "title", "code")
 
 class ItemType(DjangoObjectType):
-
     class Meta:
         model = Item
         fields = ("id", "name", "quantity", "units")
@@ -78,13 +76,15 @@ class GroceriesCreation(graphene.Mutation):
 
     @classmethod
     def mutate(cls, root, info, code, title):
-        groceries = Groceries.objects.create(code=code, title=title)
+        if( type(code) is not str or len(code) != 8 ):
+            code = generate_unique_code()
+
+        groceries = Groceries.objects.create(title=title, code=code)
         groceries.save()
         return GroceriesMutation(groceries=groceries)
 
 
 class GroceriesDeletion(graphene.Mutation):
-
     class Arguments:
         code = graphene.String()
 

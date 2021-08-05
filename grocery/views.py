@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from rest_framework import generics
-from .serializers import GroceriesSerializer
+from rest_framework.views import APIView
+from rest_framework.views import APIView
+from .serializers import GroceriesSerializer, CreateGroceriesSerializer
 from .models import Groceries
 
 class GroceriesView(generics.CreateAPIView):

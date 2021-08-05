@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GroupJoinPage from './GroupJoinPage';
+import RoomJoinPage from './GroupJoinPage';
 import CreateGroupPage from './CreateGroupPage';
 import TryApolloPage from './TryApolloPage.js';
 
@@ -12,9 +12,9 @@ export default class HomePage extends Component {
         return (
             <Router>
                 <Switch>
-                    <Route exact path='/'><p>Welcome Home.</p></Route>
+                    <Route exact path='/'>Ass</Route>
                     <Route path='/create' component={CreateGroupPage} />
-                    <Route path='/join' component={GroupJoinPage} />
+                    <Route path='/join' component={RoomJoinPage} />
                     <Route path='/try'><TryApolloPage name="Ass" /></Route>
                 </Switch>
             </Router>

@@ -19,3 +19,16 @@ export const GET_ROOM_QUERY = gql`
         }
     }
 `
+
+
+export const MAKE_ROOM_MUTATION = gql`
+    mutation createGroceries($code: String = "JAAAHN", $title: String = "Chinese stuff"){
+        createGroceries(code: $code, title: $title) {
+        groceries {
+            title
+            id
+            code
+        }
+        }
+    }
+`

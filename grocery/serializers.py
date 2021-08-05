@@ -4,4 +4,9 @@ from .models import Groceries
 class GroceriesSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Groceries
-        fields = ['id', 'title', 'code']
+        fields = ('id', 'title', 'code')
+
+class CreateGroceriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Groceries
+        fields = ('title')
