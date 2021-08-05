@@ -23,10 +23,17 @@ def generate_unique_code():
     return code
 
 
+class Groceries(models.Model):
+    min_length_code = 8
+    title = models.CharField(max_length=80, default="Our Grocery List")
+    code = models.CharField(max_length=min_length_code, default=generate_unique_code, unique=True)
+
+
 class Item(models.Model):
     name        = models.CharField(max_length=80)
     quantity    = models.FloatField(default=1)
     units       = models.CharField(max_length=30)
+    list        = models.ForeignKey(Groceries, on_delete=models.CASCADE, default=Groceries.objects.all().first().pk)
 
     # How to ask for bottles, boxes, etc?
     # I can't make enums work so I'm just gonna be lazy
@@ -44,11 +51,3 @@ class Item(models.Model):
     #     choices=Unit.choices,
     #     default=Unit.NONE
     # )
-
-
-class Groceries(models.Model):
-    min_length_code = 8
-    title = models.CharField(max_length=80, default="Our Grocery List")
-    code = models.CharField(max_length=min_length_code, default=generate_unique_code, unique=True)
-
-

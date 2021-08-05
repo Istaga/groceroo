@@ -10,7 +10,7 @@ class GroceriesType(DjangoObjectType):
 class ItemType(DjangoObjectType):
     class Meta:
         model = Item
-        fields = ("id", "name", "quantity", "units")
+        fields = ("id", "name", "quantity", "units", "list")
 
 
 class Query(graphene.ObjectType):
@@ -30,21 +30,21 @@ class Query(graphene.ObjectType):
     def resolve_all_items(root, info):
         return Item.objects.all()
 
-
-
-
+#### Item Mutations
 
 class ItemCreation(graphene.Mutation):
     class Arguments:
         name = graphene.String(required=True)
         quantity = graphene.Float(required=True)
         units = graphene.String(required=True)
+        list_code = graphene.String(required=True)
 
     item = graphene.Field(ItemType)
 
     @classmethod
-    def mutate(cls, root, info, name, quantity, units):
-        item = Item.objects.create(name=name, quantity=quantity, units=units)
+    def mutate(cls, root, info, name, quantity, units, list_code):
+        list = Groceries.objects.filter(code=list_code)
+        item = Item.objects.create(name=name, quantity=quantity, units=units, list=list)
         item.save()
         return ItemMutation(item=item)
 
@@ -54,18 +54,22 @@ class ItemMutation(graphene.Mutation):
         name = graphene.String(required=True)
         quantity = graphene.Float(required=True)
         units = graphene.String(required=True)
+        list_code = graphene.String(required=True)
 
     item = graphene.Field(ItemType)
 
     @classmethod
-    def mutate(cls, root, info, id, name, quantity, units):
+    def mutate(cls, root, info, id, name, quantity, units, list_code):
         item = Item.objects.get(id=id)
         item.name = name
         item.quantity = quantity
         item.units = units
+        item.list_code = list_code
         item.save()
         return ItemMutation(item=item)
 
+
+#### Groceries Mutations
 
 class GroceriesCreation(graphene.Mutation):
     class Arguments:
