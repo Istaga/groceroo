@@ -15,34 +15,26 @@ const CreateGroupPage = () => {
     const [title, setTitle] = useState("Groceries");
     const [retrievedCode, setCode] = useState("AAAAAAAA");
     const titleFieldRef = useRef();
-    const roomLinkRef = useRef(1);
-    const [ makeRoom ] = useMutation(CREATE_ROOM_MUTATION);
-    const [data, setData] = useState()
-    const [error, setError] = useState()
-
+    const [ makeRoom, {data, loading, error} ] = useMutation(CREATE_ROOM_MUTATION,
+        {
+            variables: { 
+                title: title,
+                code: '',
+            },
+            notifyOnNetworkStatusChange: true,
+            onCompleted: async({ makeRoom }) => {
+                if(data === undefined){
+                    console.log("Undefined slur");
+                }
+                console.log("What's this loading business: ");
+                console.log("Loading: " + loading);
+                console.log("oi fack cant ees an error");
+                console.log("The error is " + error);
+            }
+        }
+    );
 
     const btnHandler =  () => {
-
-        try {
-            const { data } = makeRoom(
-                {
-                variables: { 
-                    title: title,
-                    code: '',
-                }
-            })
-            if(data === undefined){
-                console.log("data is undefined")
-            }
-            setData(data);
-            setCode(data.pacificRoom.code);
-            console.log("The data is " + data);
-        }
-        catch (e) {
-            setError(e)
-            console.log("oi fack cant ees an error");
-            console.log("The error is " + e);
-        }
 
     }
 
@@ -71,9 +63,7 @@ const CreateGroupPage = () => {
                     <Button
                     color="secondary" 
                     variant="contained" 
-                    onClick={
-                        () => btnHandler()
-                    }
+                    onClick={() => makeRoom()}
                     >
                         Create a grocery list
                     </Button>
