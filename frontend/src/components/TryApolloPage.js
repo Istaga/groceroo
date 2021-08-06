@@ -33,7 +33,8 @@ function SpecificTings(props) {
     const { loading, error, data } = useQuery(GET_ROOM_QUERY, 
         {
             variables: { code: props.room_code }
-        });
+        }
+    );
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
     if (data === undefined | data == null ) return <p>Oh no!</p>;
