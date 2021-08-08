@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { 
-    TextField, Button, Grid, Typography, FormHelperText, FormControl, FormControlLabel, Radio, RadioGroup
+    TextField, Button, Grid, Typography, FormHelperText, FormControl,
 } from '@material-ui/core';
 import { withRouter, Link } from 'react-router-dom';
 
@@ -26,7 +26,6 @@ const CreateGroupPage = (props) => {
                 // I know I should use the response object but it's undefined god knows why
                 setCode(data.createGroceries.groceries.code);
                 info.push(title, data.createGroceries.groceries.code);
-                console.log(info);
                 props.history.push(
                     { pathname: '/rooms/', state: info }
                 );
@@ -36,9 +35,9 @@ const CreateGroupPage = (props) => {
 
 
     return (
-        <Grid container spacing={1}>
+        <Grid container spacing={3}>
             <Grid item xs={12} align='center'>
-                <Typography component="h2">
+                <Typography variant="h2">
                     Create A Grocery List!
                 </Typography>
             </Grid>
