@@ -1,5 +1,15 @@
 import { gql } from '@apollo/client';
 
+export const GET_RECENT_ROOM = gql`
+    query getLastRoom{
+        lastRoom{
+            id
+            title
+            code
+        }
+    }
+`
+
 export const ALL_ROOMS_QUERY = gql`
     query showGroceryLists {
         allGroceries{

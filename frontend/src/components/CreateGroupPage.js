@@ -5,38 +5,31 @@ import {
 import { Link } from 'react-router-dom';
 
 import {
-    useMutation,
+    useMutation, useLazyQuery, useQuery
 } from "@apollo/client";
-import { CREATE_ROOM_MUTATION } from '../gql/Queries';
+import { CREATE_ROOM_MUTATION, GET_RECENT_ROOM } from '../gql/Queries';
 
 
 const CreateGroupPage = () => {
-    let roomID = '';
+    let info = [];
     const [title, setTitle] = useState("Groceries");
     const [retrievedCode, setCode] = useState("AAAAAAAA");
     const titleFieldRef = useRef();
-    const [ makeRoom, {data, loading, error} ] = useMutation(CREATE_ROOM_MUTATION,
+    const recentRoom = useQuery(GET_RECENT_ROOM);
+    const [ makeRoom, shrigma ] = useMutation(CREATE_ROOM_MUTATION,
         {
             variables: { 
                 title: title,
                 code: '',
             },
-            notifyOnNetworkStatusChange: true,
-            onCompleted: async({ makeRoom }) => {
-                if(data === undefined){
-                    console.log("Undefined slur");
-                }
-                console.log("What's this loading business: ");
-                console.log("Loading: " + loading);
-                console.log("oi fack cant ees an error");
-                console.log("The error is " + error);
+            onCompleted: (data) => {
+                // I know I should use the response object but it's undefined god knows why
+                setCode(data.createGroceries.groceries.code);
+                info.push(title, retrievedCode);
             }
         }
     );
 
-    const btnHandler =  () => {
-
-    }
 
     return (
         <Grid container spacing={1}>
@@ -59,11 +52,11 @@ const CreateGroupPage = () => {
                 </FormControl>
             </Grid>
             <Grid item xs={12} align="center">
-                <Link to={{pathname: `/rooms/${roomID}`, state: retrievedCode}}>
+                <Link to={{pathname: `/rooms/`, state: info}}>
                     <Button
                     color="secondary" 
                     variant="contained" 
-                    onClick={() => makeRoom()}
+                    onClick={() => {makeRoom()}}
                     >
                         Create a grocery list
                     </Button>

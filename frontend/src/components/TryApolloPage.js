@@ -3,7 +3,7 @@ import {
     useQuery,
 } from "@apollo/client";
 
-import { ALL_ROOMS_QUERY, GET_ROOM_QUERY } from '../gql/Queries';
+import { ALL_ROOMS_QUERY, GET_RECENT_ROOM } from '../gql/Queries';
 
 // const pleaseworkquery = gql`
 //         query showGroceryLists {
@@ -30,19 +30,15 @@ function GroceryTings() {
 }
 
 function SpecificTings(props) {
-    const { loading, error, data } = useQuery(GET_ROOM_QUERY, 
-        {
-            variables: { code: props.room_code }
-        }
-    );
+    const { loading, error, data } = useQuery(GET_RECENT_ROOM);
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error :(</p>;
     if (data === undefined | data == null ) return <p>Oh no!</p>;
     return (
         <div>
-            Code is: { data.pacificRoom.code }
+            Code is: { data.lastRoom.code }
             ===
-            title is : { data.pacificRoom.title }
+            title is : { data.lastRoom.title }
         </div>
     )
 }

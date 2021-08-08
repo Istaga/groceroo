@@ -13,7 +13,7 @@ export default class HomePage extends Component {
             <Router>
                 <Switch>
                     <Route exact path='/'>Ass</Route>
-                    <Route path='/create' component={CreateGroupPage} />
+                    <Route path='/create'><CreateGroupPage /></Route>
                     <Route path='/join' component={RoomJoinPage} />
                     <Route path='/try'><TryApolloPage name="Ass" /></Route>
                     <Route path='/rooms/' component={GroceriesPage}></Route>

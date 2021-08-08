@@ -18,6 +18,7 @@ class Query(graphene.ObjectType):
     pacific_room = graphene.Field(GroceriesType, code=graphene.String())
     all_items = DjangoListField(ItemType)
     pacific_items = graphene.List(ItemType, code=graphene.String())
+    last_room = graphene.Field(GroceriesType)
 
     def resolve_all_groceries(root, info):
         return Groceries.objects.all()
@@ -34,6 +35,11 @@ class Query(graphene.ObjectType):
     def resolve_pacific_items(root, info, code):
         groceries = Groceries.objects.get(code=code)
         return Item.objects.filter(list=groceries)
+
+    def resolve_last_room(root, info):
+        groceries = Groceries.objects.last()
+        return groceries
+
 
 
 #### Item Mutations
