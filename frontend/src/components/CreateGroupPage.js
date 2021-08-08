@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 import { 
     TextField, Button, Grid, Typography, FormHelperText, FormControl, FormControlLabel, Radio, RadioGroup
 } from '@material-ui/core';
-import { Link } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import {
     useMutation, useLazyQuery, useQuery
@@ -10,13 +10,13 @@ import {
 import { CREATE_ROOM_MUTATION, GET_RECENT_ROOM } from '../gql/Queries';
 
 
-const CreateGroupPage = () => {
+const CreateGroupPage = (props) => {
     let info = [];
     const [title, setTitle] = useState("Groceries");
     const [retrievedCode, setCode] = useState("AAAAAAAA");
     const titleFieldRef = useRef();
     const recentRoom = useQuery(GET_RECENT_ROOM);
-    const [ makeRoom, shrigma ] = useMutation(CREATE_ROOM_MUTATION,
+    const [ makeRoom ] = useMutation(CREATE_ROOM_MUTATION,
         {
             variables: { 
                 title: title,
@@ -25,10 +25,14 @@ const CreateGroupPage = () => {
             onCompleted: (data) => {
                 // I know I should use the response object but it's undefined god knows why
                 setCode(data.createGroceries.groceries.code);
-                info.push(title, retrievedCode);
+                info.push(title, data.createGroceries.groceries.code);
+                console.log(info);
+                props.history.push(
+                    { pathname: '/rooms/', state: info }
+                );
             }
         }
-    );
+    ); 
 
 
     return (
@@ -52,15 +56,13 @@ const CreateGroupPage = () => {
                 </FormControl>
             </Grid>
             <Grid item xs={12} align="center">
-                <Link to={{pathname: `/rooms/`, state: info}}>
-                    <Button
+                <Button
                     color="secondary" 
                     variant="contained" 
                     onClick={() => {makeRoom()}}
-                    >
-                        Create a grocery list
-                    </Button>
-                </Link>
+                >
+                    Create a grocery list
+                </Button>
             </Grid>
             <Grid item xs={12} align="center">
                 <Button color="primary" variant="contained" to="/" component={Link}>
@@ -71,4 +73,4 @@ const CreateGroupPage = () => {
     );
 }
 
-export default CreateGroupPage
+export default withRouter(CreateGroupPage);
