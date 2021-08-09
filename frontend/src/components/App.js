@@ -14,7 +14,7 @@ import {
 } from "@apollo/client";
 
 const link = createHttpLink({
-    uri: 'api/gql',
+    uri: '/api/gql',
     credentials: 'same-origin'
 });
   

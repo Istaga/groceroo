@@ -72,3 +72,16 @@ export const CREATE_ITEM_MUTATION = gql`
         }
     }
 `
+
+export const DELETE_ITEM_MUTATION = gql`
+    mutation deleteItem($id: ID!){
+        deleteItem(id: $id){
+            item {
+                id
+                name
+                quantity
+                units
+            }
+        }
+    }
+`

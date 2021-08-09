@@ -38,7 +38,7 @@ const CreateGroupPage = (props) => {
         <Grid container spacing={3}>
             <Grid item xs={12} align='center'>
                 <Typography variant="h2">
-                    Create A Grocery List!
+                    Create A Grocery List!!!
                 </Typography>
             </Grid>
             <Grid item xs={12} align='center'>
