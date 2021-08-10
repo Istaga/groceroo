@@ -61,13 +61,10 @@ export const CREATE_ITEM_MUTATION = gql`
     mutation createItem($name: String!, $quantity: Float!, $units: String!, $list_code: String!){
         createItem(name: $name, quantity: $quantity, units: $units, listCode: $list_code){
             item {
+                id
                 name
                 quantity
                 units
-                list{
-                title
-                code
-                }
             }
         }
     }

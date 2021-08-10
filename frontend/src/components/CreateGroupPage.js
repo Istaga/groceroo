@@ -5,7 +5,7 @@ import {
 import { withRouter, Link } from 'react-router-dom';
 
 import {
-    useMutation, useLazyQuery, useQuery
+    useMutation, useQuery
 } from "@apollo/client";
 import { CREATE_ROOM_MUTATION, GET_RECENT_ROOM } from '../gql/Queries';
 
@@ -23,7 +23,6 @@ const CreateGroupPage = (props) => {
                 code: '',
             },
             onCompleted: (data) => {
-                // I know I should use the response object but it's undefined god knows why
                 setCode(data.createGroceries.groceries.code);
                 info.push(title, data.createGroceries.groceries.code);
                 props.history.push(
@@ -38,7 +37,7 @@ const CreateGroupPage = (props) => {
         <Grid container spacing={3}>
             <Grid item xs={12} align='center'>
                 <Typography variant="h2">
-                    Create A Grocery List!!!
+                    Create A Grocery List
                 </Typography>
             </Grid>
             <Grid item xs={12} align='center'>

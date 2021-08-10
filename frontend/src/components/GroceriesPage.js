@@ -30,7 +30,7 @@ const GroceriesPage = (props) => {
                 </Typography>
             </Grid>
             <Grid container item xs={12} spacing={8}>
-                <ItemTable />
+                <ItemTable code={code} />
             </Grid>
         </Grid>
     )

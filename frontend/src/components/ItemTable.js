@@ -1,32 +1,28 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
 import { 
     Grid, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, 
     TableRow, TableSortLabel, Toolbar, Typography, Paper, Checkbox, IconButton,
-    Tooltip, FormControlLabel, Switch
+    Tooltip, FormControlLabel, Switch, FormControl, TextField, FormHelperText,
+    InputBase, Divider,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
+import PostAddIcon from '@material-ui/icons/PostAdd';
 
 import {
     useMutation, useLazyQuery, useQuery
 } from "@apollo/client";
-import { DELETE_ITEM_MUTATION } from '../gql/Queries';
+import { CREATE_ITEM_MUTATION, DELETE_ITEM_MUTATION } from '../gql/Queries';
 
 function createData(id, name, quantity, units) {
   return { id, name, quantity, units };
 }
 
 const sRows = [
-    createData(0, 'Cheese', 3, 'wheels'),
-    createData(1, 'Steak', 2, 'packs'),
-    createData(2, 'Striploin', 1, 'thing'),
-    createData(3, 'Apples', 3, 'thingies'),
-    createData(4, 'Oranges', 2, 'bags'),
-    createData(5, 'FrozenBerries', 5, 'bags'),
-    createData(6, 'FrozenBerries', 13, 'bags'),
+    
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -202,27 +198,70 @@ const useStyles = makeStyles((theme) => ({
     top: 20,
     width: 1,
   },
+  submitRoot:{
+    padding: '2px 4px',
+    display: 'flex',
+    alignItems: 'center',
+    width: 400,
+  },
+  input: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+  },
+  iconButton: {
+    padding: 10,
+  },
+  divider: {
+    height: 28,
+    margin: 4,
+  },
+  shrigma: {
+    justifyContent: 'center',
+    flex: 1
+  }
 }));
 
 
 // TABLE
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
+  const roomCode = props.code;
   const classes = useStyles();
-  const [rows, setRows] = React.useState(sRows);
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('name');
-  const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [newItemID, setNewItemID] = useState(-1);
+  const [rows, setRows] = useState(sRows);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('name');
+  const [selected, setSelected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const [itemName, setItemName] = useState("Egg");
+  const itemNameFieldRef = useRef();
+  const [itemQuant, setItemQuant] = useState(1);
+  const itemQuantFieldRef = useRef();
+  const [itemUnits, setItemUnits] = useState("container");
+  const itemUnitsFieldRef = useRef();
   const [ deleteItem ] = useMutation(DELETE_ITEM_MUTATION,
     {
         variables: { 
             id: 4,
         },
     }
-); 
+  );
+  const [ createItem ] = useMutation(CREATE_ITEM_MUTATION,
+    {
+        variables: { 
+            name: itemName,
+            quantity: itemQuant,
+            units: itemUnits,
+            list_code: roomCode,
+        },
+        onCompleted: (data) => {
+            setNewItemID(data.createItem.item.id);
+            AddNewRow();
+        }
+    }
+  ); 
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -267,8 +306,16 @@ export default function EnhancedTable() {
     setSelected([]);
   };
 
-  const AddNewRow = (rowToAdd) => {
-    setRows(...rows, rowToAdd);
+  const addToList = () => {
+    // in order to generate a real ID we add the item to the server, get the response with the ID, use it as a key before rendering it on the page
+    createItem();
+  }
+
+  // Callback on completed response
+  const AddNewRow = () => {
+    let newRow = createData(newItemID, itemName, itemQuant, itemUnits);
+    let z = rows.concat(newRow);
+    setRows(z);
   }
 
   const handleChangePage = (event, newPage) => {
@@ -350,7 +397,7 @@ export default function EnhancedTable() {
                     </Table>
                     </TableContainer>
                     <TablePagination
-                    rowsPerPageOptions={[10, 20]}
+                    rowsPerPageOptions={[8,10]}
                     component="div"
                     count={rows.length}
                     rowsPerPage={rowsPerPage}
@@ -363,9 +410,48 @@ export default function EnhancedTable() {
                     control={<Switch checked={dense} onChange={handleChangeDense} />}
                     label="Dense padding"
                 />
-                </div>
-            </Grid>
-        <Grid item xs={12}>
+            </div>
+        </Grid>
+        <Grid container item xs={12} className={classes.shrigma}>
+            <Paper component="form" className={classes.submitRoot}>
+                <InputBase
+                    className={classes.input}
+                    placeholder="Egg"
+                    inputProps={{ 'aria-label': 'itemname' }}
+                    inputRef={itemNameFieldRef}
+                    onChange={() => setItemName(itemNameFieldRef.current.value)}
+                    required={true}
+                    defaultValue={itemName}
+                />
+                <Divider className={classes.divider} orientation="vertical" />
+                <InputBase
+                    className={classes.input}
+                    placeholder="1"
+                    inputProps={{ 'aria-label': 'itemquant' }}
+                    inputRef={itemQuantFieldRef}
+                    onChange={() => setItemQuant(itemQuantFieldRef.current.value)}
+                    required={true}
+                    defaultValue={itemQuant}
+                />
+                <Divider className={classes.divider} orientation="vertical" />
+                <InputBase
+                    className={classes.input}
+                    placeholder="container"
+                    inputProps={{ 'aria-label': 'itemunits' }}
+                    inputRef={itemUnitsFieldRef}
+                    onChange={() => setItemUnits(itemUnitsFieldRef.current.value)}
+                    required={true}
+                    defaultValue={itemUnits}
+                />
+                <Divider className={classes.divider} orientation="vertical" />
+                <IconButton  
+                    className={classes.iconButton} 
+                    aria-label="submittolist"
+                    onClick={() => addToList()}
+                >
+                    <PostAddIcon style={{ fill: "green" }} />
+                </IconButton>
+            </Paper>
             
         </Grid>
     </Grid>
