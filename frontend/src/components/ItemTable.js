@@ -232,7 +232,7 @@ export default function EnhancedTable(props) {
   const [orderBy, setOrderBy] = useState('name');
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
-  const [dense, setDense] = useState(false);
+  const [dense, setDense] = useState(true);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [itemName, setItemName] = useState("Egg");
   const itemNameFieldRef = useRef();
