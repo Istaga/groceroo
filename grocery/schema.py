@@ -68,10 +68,10 @@ class ItemDeletion(graphene.Mutation):
     item = graphene.Field(ItemType)
 
     @classmethod
-    def mutate(cls, root, info, id):
+    def mutate(cls, root, info, id, **input):
         item = Item.objects.get(id=id)
         item.delete()
-        return ItemDeletion(item = item)
+        return id
 
 
 class ItemMutation(graphene.Mutation):

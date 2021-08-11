@@ -15,7 +15,7 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import {
     useMutation, useLazyQuery, useQuery
 } from "@apollo/client";
-import { CREATE_ITEM_MUTATION, DELETE_ITEM_MUTATION, FIND_ITEMS_OF_LIST } from '../gql/Queries';
+import { CREATE_ITEM_MUTATION, DELETE_ITEM_MUTATION } from '../gql/Queries';
 
 function createData(id, name, quantity, units) {
   return { id, name, quantity, units };
@@ -240,6 +240,7 @@ export default function EnhancedTable(props) {
   const itemQuantFieldRef = useRef();
   const [itemUnits, setItemUnits] = useState("container");
   const itemUnitsFieldRef = useRef();
+
   useMemo(() => {
     if (items === undefined){
       setRows([]);
@@ -250,9 +251,7 @@ export default function EnhancedTable(props) {
   }, []);
   const [ deleteItem ] = useMutation(DELETE_ITEM_MUTATION,
     {
-        variables: { 
-            id: 4,
-        },
+        
     }
   );
   const [ createItem ] = useMutation(CREATE_ITEM_MUTATION,
@@ -264,8 +263,7 @@ export default function EnhancedTable(props) {
             list_code: roomCode,
         },
         onCompleted: (data) => {
-            setNewItemID(data.createItem.item.id);
-            AddNewRow();
+            AddNewRow(data.createItem.item.id);
         }
     }
   );
@@ -307,8 +305,8 @@ export default function EnhancedTable(props) {
   };
 
   const DeleteSelectedRows = (rowsToDelete) => {
-    deleteItem();
     setRows(rows.filter((row, index) => {
+        deleteItem({ variables: { id: row.id }});
         return !rowsToDelete.includes(row.id);
     }));
     setSelected([]);
@@ -320,8 +318,8 @@ export default function EnhancedTable(props) {
   }
 
   // Callback on completed response
-  const AddNewRow = () => {
-    let newRow = createData(newItemID, itemName, itemQuant, itemUnits);
+  const AddNewRow = (newID) => {
+    let newRow = createData(newID, itemName, itemQuant, itemUnits);
     let z = rows.concat(newRow);
     setRows(z);
   }

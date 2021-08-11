@@ -5,9 +5,9 @@ import {
 import { withRouter, Link } from 'react-router-dom';
 
 import {
-    useMutation, useQuery
+    useMutation
 } from "@apollo/client";
-import { CREATE_ROOM_MUTATION, GET_RECENT_ROOM } from '../gql/Queries';
+import { CREATE_ROOM_MUTATION } from '../gql/Queries';
 
 
 const CreateGroupPage = (props) => {
@@ -15,7 +15,7 @@ const CreateGroupPage = (props) => {
     const [title, setTitle] = useState("Groceries");
     const [retrievedCode, setCode] = useState("AAAAAAAA");
     const titleFieldRef = useRef();
-    const recentRoom = useQuery(GET_RECENT_ROOM);
+
     const [ makeRoom ] = useMutation(CREATE_ROOM_MUTATION,
         {
             variables: { 
