@@ -8,9 +8,9 @@ import {
 import { withRouter, Link } from 'react-router-dom';
 
 import {
-    useMutation, useQuery
+    useMutation, useLazyQuery, useQuery
 } from "@apollo/client";
-import { CREATE_ROOM_MUTATION, GET_RECENT_ROOM } from '../gql/Queries';
+import { CREATE_ROOM_MUTATION, FIND_ITEMS_OF_LIST, GET_RECENT_ROOM, GET_ROOM_QUERY } from '../gql/Queries';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -85,23 +85,51 @@ const JoinGroupPage = (props) => {
     const classes = useStyles();
     let info = [];
     const [title, setTitle] = useState("Groceries");
-    const [retrievedCode, setCode] = useState("AAAAAAAA");
+    const [retrievedCode, setCode] = useState("YLKXTALF");
+    const [itemList, setItemList] = useState([]);
     const titleFieldRef = useRef();
     const codeFieldRef = useRef();
-    const [arrow, setArrow] = React.useState(false);
-    const [arrowRef, setArrowRef] = React.useState(null);
+    const [ getTitle ] = useLazyQuery(GET_ROOM_QUERY,
+        {
+            variables: { 
+                code: retrievedCode,
+            },
+            onCompleted: (shrigma) => {
+                setTitle(shrigma.pacificRoom.title);
+            } 
+        }
+    ); 
+    const [ getItems ] = useLazyQuery(FIND_ITEMS_OF_LIST,
+        {
+            variables: { 
+                code: retrievedCode,
+            },
+            onCompleted: (shrigma) => {
+                setItemList(shrigma.pacificItems);
+            } 
+        }
+    );
 
     // MUI popper
-    const [anchorEl, setAnchorEl] = useState(null);
-    const handleClick = (event) => {
-        setAnchorEl(anchorEl ? null : event.currentTarget);
-    };
-    const open = Boolean(anchorEl);
-    const id = open ? 'simple-popper' : undefined;
+    const anchorRef = React.useRef(null);
+    const [arrow, setArrow] = React.useState(false);
+    const [arrowRef, setArrowRef] = React.useState(null);
+    const [open, setOpen] = React.useState(false);
+    const id = open ? 'scroll-playground' : null;
 
     const handleClickButton = () => {
         setOpen((prevOpen) => !prevOpen);
-      };
+        // Find room title
+        getTitle();
+        getItems();
+    };
+
+    const handleJoinButton = () => {
+        const info = [title, retrievedCode, itemList];
+        props.history.push(
+            { pathname: '/rooms/', state: info }
+        );
+    }
 
 
     return (
@@ -120,20 +148,24 @@ const JoinGroupPage = (props) => {
                         defaultValue={retrievedCode}
                     />
                     <FormHelperText text-align="center">
-                        Use the 8-character code here. Try "ABCDEFGH"
+                        Use the 8-character code here. Try "YLKXTALF"
                     </FormHelperText>
                 </FormControl>
             </Grid>
             <Grid item xs={12} align="center">
                 <Button
+                    ref={anchorRef}
                     aria-describedby={id}
                     color="secondary" 
                     variant="contained" 
-                    onClick={handleClick}
+                    onClick={handleClickButton}
                 >
                     See what's on the list
                 </Button>
                 <Popper
+                    id={id}
+                    open={open}
+                    anchorEl={anchorRef.current}
                     placement="top"
                     disablePortal={false}
                     modifiers={{
@@ -150,18 +182,18 @@ const JoinGroupPage = (props) => {
                     },
                     }}
                 >
-                    <span className={classes.arrow} ref={setArrowRef} />
+                    {arrow ? <span className={classes.arrow} ref={setArrowRef} /> : null}
                     <Paper className={classes.paper}>
-                        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+                        <DialogTitle>{title}</DialogTitle>
                         <DialogContent>
-                        <DialogContentText>Let Google help apps determine location.</DialogContentText>
+                        <DialogContentText>Is this the list you were looking for?</DialogContentText>
                         </DialogContent>
                         <DialogActions>
                         <Button onClick={handleClickButton} color="primary">
-                            Disagree
+                            Wrong one.
                         </Button>
-                        <Button onClick={handleClickButton} color="primary">
-                            Agree
+                        <Button onClick={handleJoinButton} color="primary">
+                            Join list
                         </Button>
                         </DialogActions>
                     </Paper>

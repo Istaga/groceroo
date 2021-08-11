@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -15,15 +15,13 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 import {
     useMutation, useLazyQuery, useQuery
 } from "@apollo/client";
-import { CREATE_ITEM_MUTATION, DELETE_ITEM_MUTATION } from '../gql/Queries';
+import { CREATE_ITEM_MUTATION, DELETE_ITEM_MUTATION, FIND_ITEMS_OF_LIST } from '../gql/Queries';
 
 function createData(id, name, quantity, units) {
   return { id, name, quantity, units };
 }
 
-const sRows = [
-    
-];
+const sRows = [];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -226,6 +224,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EnhancedTable(props) {
   const roomCode = props.code;
+  const items = props.items;
   const classes = useStyles();
   const [newItemID, setNewItemID] = useState(-1);
   const [rows, setRows] = useState(sRows);
@@ -241,6 +240,9 @@ export default function EnhancedTable(props) {
   const itemQuantFieldRef = useRef();
   const [itemUnits, setItemUnits] = useState("container");
   const itemUnitsFieldRef = useRef();
+  useMemo(() => {
+    setRows(items);
+  }, []);
   const [ deleteItem ] = useMutation(DELETE_ITEM_MUTATION,
     {
         variables: { 
@@ -261,7 +263,8 @@ export default function EnhancedTable(props) {
             AddNewRow();
         }
     }
-  ); 
+  );
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';

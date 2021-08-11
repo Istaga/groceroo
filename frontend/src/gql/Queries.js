@@ -43,6 +43,22 @@ export const CREATE_ROOM_MUTATION = gql`
     }
 `
 
+export const FIND_ITEMS_OF_LIST = gql`
+    query findItemsOfList($code: String!) {
+        pacificItems(code: $code){
+            id
+            name
+            quantity
+            units
+            list {
+                id
+                title
+                code
+            }
+        }
+    }
+`
+
 export const ALL_ITEMS_QUERY = gql`
     query showAllItems {
         allItems {

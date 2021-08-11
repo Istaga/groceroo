@@ -15,6 +15,7 @@ const GroceriesPage = (props) => {
     const groceryInfo = useLocation().state;
     const title = groceryInfo[0];
     const code = groceryInfo[1];
+    const items = groceryInfo[2];
     const classes = useStyles();
     
     return (
@@ -30,7 +31,7 @@ const GroceriesPage = (props) => {
                 </Typography>
             </Grid>
             <Grid container item xs={12} spacing={8}>
-                <ItemTable code={code} />
+                <ItemTable code={code} items={items} />
             </Grid>
         </Grid>
     )
