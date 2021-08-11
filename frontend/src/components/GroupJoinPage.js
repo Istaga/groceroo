@@ -1,16 +1,15 @@
 import React, { useState, useRef } from 'react'
 import { 
     TextField, Button, Grid, FormHelperText, FormControl, 
-    Popper, makeStyles, FormControlLabel, HighlightedCode, Typography,
+    Popper, makeStyles, Typography, DialogTitle,
     Paper, DialogActions, DialogContent, DialogContentText,
-    DialogTitle, Switch,
 } from '@material-ui/core';
 import { withRouter, Link } from 'react-router-dom';
 
 import {
-    useMutation, useLazyQuery, useQuery
+    useLazyQuery
 } from "@apollo/client";
-import { CREATE_ROOM_MUTATION, FIND_ITEMS_OF_LIST, GET_RECENT_ROOM, GET_ROOM_QUERY } from '../gql/Queries';
+import { FIND_ITEMS_OF_LIST, GET_ROOM_QUERY } from '../gql/Queries';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -87,7 +86,6 @@ const JoinGroupPage = (props) => {
     const [title, setTitle] = useState("Groceries");
     const [retrievedCode, setCode] = useState("YLKXTALF");
     const [itemList, setItemList] = useState([]);
-    const titleFieldRef = useRef();
     const codeFieldRef = useRef();
     const [ getTitle ] = useLazyQuery(GET_ROOM_QUERY,
         {
@@ -119,7 +117,6 @@ const JoinGroupPage = (props) => {
 
     const handleClickButton = () => {
         setOpen((prevOpen) => !prevOpen);
-        // Find room title
         getTitle();
         getItems();
     };

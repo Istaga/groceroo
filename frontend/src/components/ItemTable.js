@@ -241,7 +241,12 @@ export default function EnhancedTable(props) {
   const [itemUnits, setItemUnits] = useState("container");
   const itemUnitsFieldRef = useRef();
   useMemo(() => {
-    setRows(items);
+    if (items === undefined){
+      setRows([]);
+    }
+    else {
+      setRows(items);
+    }
   }, []);
   const [ deleteItem ] = useMutation(DELETE_ITEM_MUTATION,
     {
