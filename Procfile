@@ -1,1 +1,1 @@
-web: gunicorn core.bestgroceryappever.wsgi
+web: gunicorn --chdir core core.wsgi
