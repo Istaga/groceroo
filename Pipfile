@@ -25,6 +25,7 @@ text-unidecode = "==1.3"
 xlwt = "==1.3.0"
 Django = "==3.2.5"
 Rx = "==1.6.1"
+gunicorn = "*"
 
 [dev-packages]
 
