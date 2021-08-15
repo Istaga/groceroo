@@ -35,19 +35,4 @@ class Item(models.Model):
     units       = models.CharField(max_length=30)
     list        = models.ForeignKey(Groceries, on_delete=models.CASCADE, default=Groceries.objects.all().first().pk)
 
-    # How to ask for bottles, boxes, etc?
-    # I can't make enums work so I'm just gonna be lazy
-    # class Unit(models.TextChoices):
-    #     MILLILITERS = 'mL', _('milliliters'),
-    #     LITERS = 'L', _('liters'),
-    #     GRAMS = 'g', _('grams'),
-    #     KILOGRAMS = 'kg', _('kilograms'),
-    #     OUNCES = 'oz', _('ounces'),
-    #     POUNDS = 'lbs', _('pounds'),
-    #     NONE = '', _(''),
 
-    # units = models.CharField(
-    #     max_length=20,
-    #     choices=Unit.choices,
-    #     default=Unit.NONE
-    # )

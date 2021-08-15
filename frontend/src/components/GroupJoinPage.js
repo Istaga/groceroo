@@ -84,7 +84,7 @@ const JoinGroupPage = (props) => {
     const classes = useStyles();
     let info = [];
     const [title, setTitle] = useState("No list found.");
-    const [retrievedCode, setCode] = useState("YLKXTALF");
+    const [retrievedCode, setCode] = useState("CLOTVEKE");
     const [itemList, setItemList] = useState([]);
     const [targetValid, setTargetValid] = useState(false);
     const codeFieldRef = useRef();
@@ -167,7 +167,7 @@ const JoinGroupPage = (props) => {
                         defaultValue={retrievedCode}
                     />
                     <FormHelperText text-align="center">
-                        Use the 8-character code here. Try "YLKXTALF"
+                        Use the 8-character code here. Try "CLOTVEKE"
                     </FormHelperText>
                 </FormControl>
             </Grid>

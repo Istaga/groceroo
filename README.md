@@ -17,7 +17,7 @@ Go to root directory `cd ..` and run
 `python manage.py runserver`
 
 
+##### TODO
 
-I eat Jahn
-
-jush
+- Add 'notes' field to item
+- Join room via URL e.g. `bestgroceryappever.herokuapp.com/rooms/ABCDEFG`
