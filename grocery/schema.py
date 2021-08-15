@@ -77,23 +77,16 @@ class ItemDeletion(graphene.Mutation):
 class ItemMutation(graphene.Mutation):
     class Arguments:
         id = graphene.ID()
-        name = graphene.String(required=True)
         quantity = graphene.Float(required=True)
-        units = graphene.String(required=True)
-        list_code = graphene.String(required=True)
 
     item = graphene.Field(ItemType)
 
     @classmethod
-    def mutate(cls, root, info, id, name, quantity, units, list_code):
+    def mutate(cls, root, info, id, quantity):
         item = Item.objects.get(id=id)
-        item.name = name
         item.quantity = quantity
-        item.units = units
-        item.list_code = list_code
         item.save()
         return ItemMutation(item=item)
-
 
 
 #### Groceries Mutations
@@ -125,7 +118,7 @@ class GroceriesDeletion(graphene.Mutation):
     def mutate(cls, root, info, code):
         groceries = Groceries.objects.get(code=code)
         groceries.delete()
-        return GroceriesMutation(groceries = groceries)
+        return code
 
 
 class GroceriesMutation(graphene.Mutation):
@@ -149,6 +142,7 @@ class Mutation(graphene.ObjectType):
     create_item = ItemCreation.Field()
     update_item = ItemMutation.Field()
     delete_item = ItemDeletion.Field()
+    
 
 
 

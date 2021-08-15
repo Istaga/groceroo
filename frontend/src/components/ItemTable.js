@@ -1,4 +1,5 @@
 import React, { useState, useRef, useMemo } from 'react';
+import { useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -9,13 +10,13 @@ import {
     InputBase, Divider,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import HighlightOffTwoToneIcon from '@material-ui/icons/HighlightOffTwoTone';
 import PostAddIcon from '@material-ui/icons/PostAdd';
 
 import {
     useMutation, useLazyQuery, useQuery
 } from "@apollo/client";
-import { CREATE_ITEM_MUTATION, DELETE_ITEM_MUTATION } from '../gql/Queries';
+import { CREATE_ITEM_MUTATION, UPDATE_ITEM_MUTATION, DELETE_ITEM_MUTATION, DELETE_ROOM_MUTATION } from '../gql/Queries';
 
 function createData(id, name, quantity, units) {
   return { id, name, quantity, units };
@@ -132,9 +133,27 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
   const classes = useToolbarStyles();
-  const { numSelected } = props;
+  const { numSelected, listCode } = props;
+  const history = useHistory();
   const deselectAndDelete = () => {
     props.deleteRows(props.retrieveSelection);
+  }
+  const [ deleteGroceries ] = useMutation(DELETE_ROOM_MUTATION, 
+      {
+        variables: { 
+          code: listCode
+        },
+        onCompleted: (data) => {
+          history.push(
+            { pathname: '/create' }
+          );
+        }
+    }
+  );
+
+  function handleGroceryListDelete(){
+    deleteGroceries()
+
   }
 
   return (
@@ -160,9 +179,9 @@ const EnhancedTableToolbar = (props) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
+        <Tooltip title="Delete list">
+          <IconButton onClick={() => handleGroceryListDelete()} aria-label="delete list">
+            <HighlightOffTwoToneIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -249,11 +268,7 @@ export default function EnhancedTable(props) {
       setRows(items);
     }
   }, []);
-  const [ deleteItem ] = useMutation(DELETE_ITEM_MUTATION,
-    {
-        
-    }
-  );
+
   const [ createItem ] = useMutation(CREATE_ITEM_MUTATION,
     {
         variables: { 
@@ -267,6 +282,10 @@ export default function EnhancedTable(props) {
         }
     }
   );
+
+  const [ updateItem ] = useMutation(UPDATE_ITEM_MUTATION, {} );
+
+  const [ deleteItem ] = useMutation(DELETE_ITEM_MUTATION, {} );
 
 
   const handleRequestSort = (event, property) => {
@@ -313,8 +332,35 @@ export default function EnhancedTable(props) {
   };
 
   const addToList = () => {
-    // in order to generate a real ID we add the item to the server, get the response with the ID, use it as a key before rendering it on the page
-    createItem();
+    // if the item doesn't exist, we createItem(), otherwise we update the existing entry in the database
+    
+    let result = rows.filter(r => {
+      return (r.name === itemName && r.units === itemUnits)
+    })
+
+    if (result.length > 0){
+      // Do update operation. Change item quantity for specific row
+      // for each row, add to object array, when row id matches with the one we want to update, then change quant before adding
+      let updatedRows = [];
+      for(let i = 0; i < rows.length; i++){
+        let oldQuant = rows[i].quantity;
+        if (rows[i].id === result[0].id){
+          let newQuant = parseFloat(oldQuant) + parseFloat(itemQuant);
+          let newRow = createData(rows[i].id, rows[i].name, newQuant, rows[i].units);
+          updatedRows.push(newRow);
+          updateItem({ variables: { id: rows[i].id, quantity: newQuant }});
+        }
+        else {
+          updatedRows.push(rows[i]);
+        }
+      }
+      setRows(updatedRows);
+    }
+
+    else {
+      // in order to generate a real ID we add the item to the server, get the response with the ID, use it as a key before rendering it on the page
+      createItem();
+    }
   }
 
   // Callback on completed response
@@ -346,7 +392,7 @@ export default function EnhancedTable(props) {
         <Grid item xs={12}>
             <div className={classes.root}>
                 <Paper className={classes.paper}>
-                    <EnhancedTableToolbar deleteRows={DeleteSelectedRows} retrieveSelection={selected} numSelected={selected.length} />
+                    <EnhancedTableToolbar listCode={roomCode} deleteRows={DeleteSelectedRows} retrieveSelection={selected} numSelected={selected.length} />
                     <TableContainer>
                     <Table
                         className={classes.table}

@@ -43,6 +43,18 @@ export const CREATE_ROOM_MUTATION = gql`
     }
 `
 
+export const DELETE_ROOM_MUTATION = gql`
+    mutation deleteGroceries($code: String!){
+        deleteGroceries(code: $code){
+            groceries {
+                id
+                code
+                title
+            }
+        }
+    }
+`
+
 export const FIND_ITEMS_OF_LIST = gql`
     query findItemsOfList($code: String!) {
         pacificItems(code: $code){
@@ -68,6 +80,17 @@ export const ALL_ITEMS_QUERY = gql`
             units
             list {
                 id
+            }
+        }
+    }
+`
+
+export const UPDATE_ITEM_MUTATION = gql`
+    mutation updateItem($id: ID!, $quantity: Float!){
+        updateItem(id: $id, quantity: $quantity){
+            item {
+                id
+                quantity
             }
         }
     }

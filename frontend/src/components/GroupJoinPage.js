@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
 const JoinGroupPage = (props) => {
     const classes = useStyles();
     let info = [];
-    const [title, setTitle] = useState("Groceries");
+    const [title, setTitle] = useState("No list found.");
     const [retrievedCode, setCode] = useState("YLKXTALF");
     const [itemList, setItemList] = useState([]);
     const codeFieldRef = useRef();
@@ -94,7 +94,10 @@ const JoinGroupPage = (props) => {
             },
             onCompleted: (shrigma) => {
                 setTitle(shrigma.pacificRoom.title);
-            } 
+            },
+            onError: (error) => {
+                setTitle("No list matching code given")
+            },
         }
     ); 
     const [ getItems ] = useLazyQuery(FIND_ITEMS_OF_LIST,
@@ -104,7 +107,10 @@ const JoinGroupPage = (props) => {
             },
             onCompleted: (shrigma) => {
                 setItemList(shrigma.pacificItems);
-            } 
+            },
+            onError: (error) => {
+                setItemList([]);
+            },
         }
     );
 
@@ -119,6 +125,10 @@ const JoinGroupPage = (props) => {
         setOpen((prevOpen) => !prevOpen);
         getTitle();
         getItems();
+    };
+
+    const handleWrongButton = () => {
+        setOpen((prevOpen) => !prevOpen);
     };
 
     const handleJoinButton = () => {
@@ -186,7 +196,7 @@ const JoinGroupPage = (props) => {
                         <DialogContentText>Is this the list you were looking for?</DialogContentText>
                         </DialogContent>
                         <DialogActions>
-                        <Button onClick={handleClickButton} color="primary">
+                        <Button onClick={handleWrongButton} color="primary">
                             Wrong one.
                         </Button>
                         <Button onClick={handleJoinButton} color="primary">
