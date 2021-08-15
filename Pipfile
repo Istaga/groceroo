@@ -27,6 +27,9 @@ Django = "==3.2.5"
 Rx = "==1.6.1"
 gunicorn = "*"
 django-heroku = "*"
+dj-database-url = "*"
+whitenoise = "*"
+psycopg2 = "*"
 
 [dev-packages]
 
