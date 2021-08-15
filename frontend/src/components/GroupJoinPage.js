@@ -86,6 +86,7 @@ const JoinGroupPage = (props) => {
     const [title, setTitle] = useState("No list found.");
     const [retrievedCode, setCode] = useState("YLKXTALF");
     const [itemList, setItemList] = useState([]);
+    const [targetValid, setTargetValid] = useState(false);
     const codeFieldRef = useRef();
     const [ getTitle ] = useLazyQuery(GET_ROOM_QUERY,
         {
@@ -94,12 +95,16 @@ const JoinGroupPage = (props) => {
             },
             onCompleted: (shrigma) => {
                 setTitle(shrigma.pacificRoom.title);
+                setTargetValid(true);
             },
             onError: (error) => {
-                setTitle("No list matching code given")
+                setTitle("No list matching code given");
+                setTargetValid(false);
             },
+            fetchPolicy: "no-cache",
         }
-    ); 
+    );
+
     const [ getItems ] = useLazyQuery(FIND_ITEMS_OF_LIST,
         {
             variables: { 
@@ -107,6 +112,7 @@ const JoinGroupPage = (props) => {
             },
             onCompleted: (shrigma) => {
                 setItemList(shrigma.pacificItems);
+                setTargetValid(true);
             },
             onError: (error) => {
                 setItemList([]);
@@ -133,9 +139,15 @@ const JoinGroupPage = (props) => {
 
     const handleJoinButton = () => {
         const info = [title, retrievedCode, itemList];
-        props.history.push(
-            { pathname: '/rooms/', state: info }
-        );
+        
+        if( targetValid ){
+            props.history.push(
+                { pathname: '/rooms/', state: info }
+            );
+        }
+        else {
+
+        }
     }
 
 
@@ -199,9 +211,12 @@ const JoinGroupPage = (props) => {
                         <Button onClick={handleWrongButton} color="primary">
                             Wrong one.
                         </Button>
-                        <Button onClick={handleJoinButton} color="primary">
-                            Join list
-                        </Button>
+                        {targetValid ? 
+                            <Button onClick={handleJoinButton} color="primary">
+                                Join list
+                            </Button> 
+                            : 
+                            null}
                         </DialogActions>
                     </Paper>
                 </Popper>
