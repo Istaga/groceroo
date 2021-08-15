@@ -1,1 +1,1 @@
-web: gunicorn bestgroceryappever.wsgi
+web: gunicorn core.bestgroceryappever.wsgi
