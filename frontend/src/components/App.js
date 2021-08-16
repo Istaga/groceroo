@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
+import Navbar from './Navbar';
 import HomePage from './HomePage';
 import { Box, Container } from '@material-ui/core';
 
@@ -32,6 +33,7 @@ export default class App extends Component{
     render(){
         return (
             <Container>
+                <Navbar />
                 <HomePage />
             </Container>
         )
