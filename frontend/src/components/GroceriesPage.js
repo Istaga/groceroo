@@ -1,22 +1,15 @@
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import { useLocation } from "react-router-dom";
 import { 
-    Paper, TextField, Button, Grid, Typography, FormHelperText, FormControl, 
-    FormControlLabel, Radio, RadioGroup, Box
+    Grid, Typography
 } from '@material-ui/core';
-import { makeStyles } from "@material-ui/core/styles";
 import ItemTable from './ItemTable';
-
-const useStyles = makeStyles((theme) => ({
-    
-}));
 
 const GroceriesPage = (props) => {
     const groceryInfo = useLocation().state;
     const title = groceryInfo[0];
     const code = groceryInfo[1];
     const items = groceryInfo[2];
-    const classes = useStyles();
     
     return (
         <Grid container spacing={4}>

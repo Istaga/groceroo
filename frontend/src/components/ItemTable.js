@@ -18,8 +18,8 @@ import {
 } from "@apollo/client";
 import { CREATE_ITEM_MUTATION, UPDATE_ITEM_MUTATION, DELETE_ITEM_MUTATION, DELETE_ROOM_MUTATION } from '../gql/Queries';
 
-function createData(id, name, quantity, units) {
-  return { id, name, quantity, units };
+function createData(id, name, quantity, units, details) {
+  return { id, name, quantity, units, details };
 }
 
 const sRows = [];
@@ -54,6 +54,7 @@ const headCells = [
   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
   { id: 'quantity', numeric: true, disablePadding: false, label: 'Quantity' },
   { id: 'units', numeric: true, disablePadding: false, label: 'Units' },
+  { id: 'details', numeric: true, disablePadding: false, label: 'Details' },
 ];
 
 function EnhancedTableHead(props) {
@@ -219,7 +220,12 @@ const useStyles = makeStyles((theme) => ({
     padding: '2px 4px',
     display: 'flex',
     alignItems: 'center',
-    width: 400,
+    width: '90%',
+  },
+  longInput: {
+    marginLeft: theme.spacing(1),
+    flex: 1,
+    minWidth: '100px',
   },
   input: {
     marginLeft: theme.spacing(1),
@@ -259,6 +265,8 @@ export default function EnhancedTable(props) {
   const itemQuantFieldRef = useRef();
   const [itemUnits, setItemUnits] = useState("container");
   const itemUnitsFieldRef = useRef();
+  const [itemDetails, setItemDetails] = useState("");
+  const itemDetailsFieldRef = useRef();
 
   useMemo(() => {
     if (items === undefined){
@@ -275,6 +283,7 @@ export default function EnhancedTable(props) {
             name: itemName,
             quantity: itemQuant,
             units: itemUnits,
+            details: itemDetails,
             list_code: roomCode,
         },
         onCompleted: (data) => {
@@ -335,7 +344,7 @@ export default function EnhancedTable(props) {
     // if the item doesn't exist, we createItem(), otherwise we update the existing entry in the database
     
     let result = rows.filter(r => {
-      return (r.name === itemName && r.units === itemUnits)
+      return (r.name === itemName && r.units === itemUnits && r.details === itemDetails)
     })
 
     if (result.length > 0){
@@ -346,7 +355,7 @@ export default function EnhancedTable(props) {
         let oldQuant = rows[i].quantity;
         if (rows[i].id === result[0].id){
           let newQuant = parseFloat(oldQuant) + parseFloat(itemQuant);
-          let newRow = createData(rows[i].id, rows[i].name, newQuant, rows[i].units);
+          let newRow = createData(rows[i].id, rows[i].name, newQuant, rows[i].units, rows[i].details);
           updatedRows.push(newRow);
           updateItem({ variables: { id: rows[i].id, quantity: newQuant }});
         }
@@ -365,7 +374,7 @@ export default function EnhancedTable(props) {
 
   // Callback on completed response
   const AddNewRow = (newID) => {
-    let newRow = createData(newID, itemName, itemQuant, itemUnits);
+    let newRow = createData(newID, itemName, itemQuant, itemUnits, itemDetails);
     let z = rows.concat(newRow);
     setRows(z);
   }
@@ -437,6 +446,7 @@ export default function EnhancedTable(props) {
                                 </TableCell>
                                 <TableCell align="right">{row.quantity}</TableCell>
                                 <TableCell align="right">{row.units}</TableCell>
+                                <TableCell align="right">{row.details}</TableCell>
                                 </TableRow>
                             );
                             })}
@@ -494,6 +504,16 @@ export default function EnhancedTable(props) {
                     onChange={() => setItemUnits(itemUnitsFieldRef.current.value)}
                     required={true}
                     defaultValue={itemUnits}
+                />
+                <Divider className={classes.divider} orientation="vertical" />
+                <InputBase
+                    className={classes.input}
+                    placeholder="organic"
+                    inputProps={{ 'aria-label': 'itemdetails' }}
+                    inputRef={itemDetailsFieldRef}
+                    onChange={() => setItemDetails(itemDetailsFieldRef.current.value)}
+                    required={false}
+                    defaultValue={itemDetails}
                 />
                 <Divider className={classes.divider} orientation="vertical" />
                 <IconButton  

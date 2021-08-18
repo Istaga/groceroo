@@ -10,7 +10,7 @@ class GroceriesType(DjangoObjectType):
 class ItemType(DjangoObjectType):
     class Meta:
         model = Item
-        fields = ("id", "name", "quantity", "units", "list")
+        fields = ("id", "name", "quantity", "units", "details", "list")
 
 
 class Query(graphene.ObjectType):
@@ -49,14 +49,15 @@ class ItemCreation(graphene.Mutation):
         name = graphene.String(required=True)
         quantity = graphene.Float(required=True)
         units = graphene.String(required=True)
+        details = graphene.String()
         list_code = graphene.String(required=True)
 
     item = graphene.Field(ItemType)
 
     @classmethod
-    def mutate(cls, root, info, name, quantity, units, list_code):
+    def mutate(cls, root, info, name, quantity, units, details, list_code):
         list = Groceries.objects.get(code=list_code)
-        item = Item.objects.create(name=name, quantity=quantity, units=units, list=list)
+        item = Item.objects.create(name=name, quantity=quantity, units=units, details=details, list=list)
         item.save()
         return ItemMutation(item=item)
 
@@ -77,7 +78,7 @@ class ItemDeletion(graphene.Mutation):
 class ItemMutation(graphene.Mutation):
     class Arguments:
         id = graphene.ID()
-        quantity = graphene.Float(required=True)
+        quantity = graphene.Float()
 
     item = graphene.Field(ItemType)
 

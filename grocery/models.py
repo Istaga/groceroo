@@ -5,11 +5,8 @@ import string
 import random
 
 # Groceries is a list of items
-# Groceries are connected to users
-# One Groceries list can be connected with many users
-# Groceries list is a list of items
+# One Groceries list can be connected with many items
 
-# todo extra: extend groceries so that a user can have a list of items they want to add every time
 
 
 def generate_unique_code():
@@ -32,7 +29,8 @@ class Groceries(models.Model):
 class Item(models.Model):
     name        = models.CharField(max_length=80)
     quantity    = models.FloatField(default=1)
-    units       = models.CharField(max_length=30)
+    units       = models.CharField(max_length=30, default="")
+    details     = models.CharField(max_length=80)
     list        = models.ForeignKey(Groceries, on_delete=models.CASCADE, default=Groceries.objects.all().first().pk)
 
 

@@ -62,6 +62,7 @@ export const FIND_ITEMS_OF_LIST = gql`
             name
             quantity
             units
+            details
             list {
                 id
                 title
@@ -78,6 +79,7 @@ export const ALL_ITEMS_QUERY = gql`
             name
             quantity
             units
+            details
             list {
                 id
             }
@@ -97,13 +99,14 @@ export const UPDATE_ITEM_MUTATION = gql`
 `
 
 export const CREATE_ITEM_MUTATION = gql`
-    mutation createItem($name: String!, $quantity: Float!, $units: String!, $list_code: String!){
-        createItem(name: $name, quantity: $quantity, units: $units, listCode: $list_code){
+    mutation createItem($name: String!, $quantity: Float!, $units: String!, $details: String!, $list_code: String!){
+        createItem(name: $name, quantity: $quantity, units: $units, details: $details listCode: $list_code){
             item {
                 id
                 name
                 quantity
                 units
+                details
             }
         }
     }
@@ -117,6 +120,7 @@ export const DELETE_ITEM_MUTATION = gql`
                 name
                 quantity
                 units
+                details
             }
         }
     }
