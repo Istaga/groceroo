@@ -38,7 +38,6 @@ const Navbar = () => {
                     <IconButton href="/" edge="start" className={classes.button} color="inherit" aria-label="menu">
                         <HomeIcon />
                     </IconButton>
-                    
                     <IconButton edge="start" href="https://github.com/Istaga/groceroo" className={classes.button} color="inherit" aria-label="menu">
                         <Typography variant="h6" className={classes.title}>
                             See code 

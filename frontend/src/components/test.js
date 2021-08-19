@@ -5,16 +5,6 @@ import {
 
 import { ALL_ROOMS_QUERY, GET_RECENT_ROOM } from '../gql/Queries';
 
-// const pleaseworkquery = gql`
-//         query showGroceryLists {
-//             allGroceries{
-//             id
-//             title
-//             code
-//             }
-//         }
-//     `
-
 function GroceryTings() {
     const { loading, error, data } = useQuery(ALL_ROOMS_QUERY);
     if (loading) return <p>Loading...</p>;

@@ -82,7 +82,6 @@ const useStyles = makeStyles((theme) => ({
 
 const JoinGroupPage = (props) => {
     const classes = useStyles();
-    let info = [];
     const [title, setTitle] = useState("No list found.");
     const [retrievedCode, setCode] = useState("CLOTVEKE");
     const [itemList, setItemList] = useState([]);

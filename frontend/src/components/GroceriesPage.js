@@ -7,10 +7,8 @@ import ItemTable from './ItemTable';
 
 const GroceriesPage = (props) => {
     const groceryInfo = useLocation().state;
-    const title = groceryInfo[0];
-    const code = groceryInfo[1];
-    const items = groceryInfo[2];
-    
+    const [title, code, items] = groceryInfo;
+
     return (
         <Grid container spacing={4}>
             <Grid item xs={12} align='center'>
