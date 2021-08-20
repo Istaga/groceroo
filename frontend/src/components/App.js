@@ -26,6 +26,7 @@ const useStyles = makeStyles(() => ({
         backgroundColor: '#dfe6e9',
         padding: 0,
         flex: 1,
+        minHeight: '100vh',
     },
     main: {
         marginTop: '2%',
