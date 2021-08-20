@@ -12,7 +12,7 @@ const GroceriesPage = (props) => {
     return (
         <Grid container spacing={4}>
             <Grid item xs={12} align='center'>
-                <Typography variant="h2">
+                <Typography style={{color: '#636e72', fontWeight: 'bold'}} variant="h2">
                     {title}
                 </Typography>
             </Grid>
@@ -21,7 +21,7 @@ const GroceriesPage = (props) => {
                     Invite someone with list code {code}
                 </Typography>
             </Grid>
-            <Grid container item xs={12} spacing={8}>
+            <Grid container item xs={12}>
                 <ItemTable code={code} items={items} />
             </Grid>
         </Grid>

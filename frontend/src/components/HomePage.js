@@ -12,7 +12,7 @@ export default class HomePage extends Component {
             <Router>
                 <Switch>
                     <Route exact path='/'><Redirect to="join" /></Route>
-                    <Route path='/create'><CreateGroupPage /></Route>
+                    <Route path='/create' component={CreateGroupPage}></Route>
                     <Route path='/join' component={RoomJoinPage} />
                     <Route path='/rooms/' component={GroceriesPage}></Route>
                 </Switch>

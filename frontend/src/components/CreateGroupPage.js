@@ -1,13 +1,13 @@
 import React, { useState, useRef } from 'react'
 import { 
-    TextField, Button, Grid, Typography, FormHelperText, FormControl,
+    TextField, Button, Grid, Typography, FormHelperText, FormControl, withStyles
 } from '@material-ui/core';
 import { withRouter, Link } from 'react-router-dom';
-
 import {
     useMutation
 } from "@apollo/client";
 import { CREATE_ROOM_MUTATION } from '../gql/Queries';
+import { AlphaButton, BetaButton } from './StyledBtns';
 
 
 const CreateGroupPage = (props) => {
@@ -30,13 +30,13 @@ const CreateGroupPage = (props) => {
                 );
             }
         }
-    ); 
+    );
 
 
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} align='center'>
-                <Typography variant="h2">
+                <Typography style={{color: '#636e72', fontWeight: 'bold'}} variant="h2">
                     Create A Grocery List
                 </Typography>
             </Grid>
@@ -54,18 +54,18 @@ const CreateGroupPage = (props) => {
                 </FormControl>
             </Grid>
             <Grid item xs={12} align="center">
-                <Button
-                    color="secondary" 
+                <AlphaButton
+                    color="primary"
                     variant="contained" 
                     onClick={() => {makeRoom()}}
                 >
                     Create a grocery list
-                </Button>
+                </AlphaButton>
             </Grid>
             <Grid item xs={12} align="center">
-                <Button color="primary" variant="contained" to="/join" component={Link}>
+                <BetaButton color="primary" variant="contained" to="/join" component={Link}>
                     Join a list
-                </Button>
+                </BetaButton>
             </Grid>
         </Grid>
     );

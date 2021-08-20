@@ -1,25 +1,25 @@
 
-import React, { Component } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Divider, Typography, AppBar, Toolbar } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
+import { Typography, AppBar, Toolbar } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import HomeIcon from '@material-ui/icons/Home';
 import GitHubIcon from '@material-ui/icons/GitHub';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      flexGrow: 1,
+        flexGrow: 1,
     },
     papa: {
         justifyContent: 'space-between',
+        backgroundColor: '#2d3436',
     },
     button: {
-      marginRight: theme.spacing(2),
-      marginLeft: theme.spacing(2),
+        marginRight: theme.spacing(2),
+        marginLeft: theme.spacing(2),
     },
     title: {
-      flexGrow: 1,
+        flexGrow: 1,
     },
     divider: {
         height: 28,

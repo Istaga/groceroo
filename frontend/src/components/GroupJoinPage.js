@@ -5,11 +5,11 @@ import {
     Paper, DialogActions, DialogContent, DialogContentText,
 } from '@material-ui/core';
 import { withRouter, Link } from 'react-router-dom';
-
 import {
     useLazyQuery
 } from "@apollo/client";
 import { FIND_ITEMS_OF_LIST, GET_ROOM_QUERY } from '../gql/Queries';
+import { AlphaButton, BetaButton } from './StyledBtns';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -144,16 +144,13 @@ const JoinGroupPage = (props) => {
                 { pathname: '/rooms/', state: info }
             );
         }
-        else {
-
-        }
     }
 
 
     return (
         <Grid container spacing={3}>
             <Grid item xs={12} align='center'>
-                <Typography variant="h2">
+                <Typography style={{color: '#636e72', fontWeight: 'bold'}} variant="h2">
                     Weary, traveller? Grab food for us
                 </Typography>
             </Grid>
@@ -171,7 +168,7 @@ const JoinGroupPage = (props) => {
                 </FormControl>
             </Grid>
             <Grid item xs={12} align="center">
-                <Button
+                <AlphaButton
                     ref={anchorRef}
                     aria-describedby={id}
                     color="secondary" 
@@ -179,7 +176,7 @@ const JoinGroupPage = (props) => {
                     onClick={handleClickButton}
                 >
                     See what's on the list
-                </Button>
+                </AlphaButton>
                 <Popper
                     id={id}
                     open={open}
@@ -221,9 +218,9 @@ const JoinGroupPage = (props) => {
                 </Popper>
             </Grid>
             <Grid item xs={12} align="center">
-                <Button color="primary" variant="contained" to="/create" component={Link}>
+                <BetaButton color="primary" variant="contained" to="/create" component={Link}>
                     I don't have a list
-                </Button>
+                </BetaButton>
             </Grid>
         </Grid>
     );

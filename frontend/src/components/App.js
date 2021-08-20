@@ -2,16 +2,13 @@ import React, { Component } from 'react';
 import { render } from 'react-dom';
 import Navbar from './Navbar';
 import HomePage from './HomePage';
-import { Box, Container } from '@material-ui/core';
+import { Container, makeStyles } from '@material-ui/core';
 
 import {
     ApolloClient,
     InMemoryCache,
     ApolloProvider,
-    useQuery,
-    gql,
     createHttpLink,
-    fromPromise
 } from "@apollo/client";
 
 const link = createHttpLink({
@@ -24,21 +21,34 @@ const client = new ApolloClient({
     cache: new InMemoryCache()
 });
 
-
-export default class App extends Component{
-    constructor(props){
-        super(props)
+const useStyles = makeStyles(() => ({
+    page: {
+        backgroundColor: '#dfe6e9',
+        padding: 0,
+        flex: 1,
+    },
+    main: {
+        marginTop: '2%',
+        maxWidth: '95%',
+        flex: 1,
     }
+}));
 
-    render(){
-        return (
-            <Container>
-                <Navbar />
+const App = () => {
+    const classes = useStyles();
+
+    return (
+        <Container className={classes.page}>
+            <Navbar />
+            <Container className={classes.main}>
                 <HomePage />
             </Container>
-        )
-    }
+        </Container>
+    );
 }
+
+
+export default App;
 
 const appDiv = document.getElementById("app");
 render( <ApolloProvider client={client}><App /></ApolloProvider>, appDiv);
