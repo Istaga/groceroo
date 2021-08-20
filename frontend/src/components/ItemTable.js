@@ -6,8 +6,7 @@ import { lighten, makeStyles } from '@material-ui/core/styles';
 import { 
     Grid, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, 
     TableRow, TableSortLabel, Toolbar, Typography, Paper, Checkbox, IconButton,
-    Tooltip, FormControlLabel, Switch, FormControl, TextField, FormHelperText,
-    InputBase, Divider,
+    Tooltip, FormControlLabel, Switch, InputBase, Divider,
 } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import HighlightOffTwoToneIcon from '@material-ui/icons/HighlightOffTwoTone';
@@ -258,7 +257,7 @@ export default function EnhancedTable(props) {
   const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(true);
-  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
   const [itemName, setItemName] = useState("Egg");
   const itemNameFieldRef = useRef();
   const [itemQuant, setItemQuant] = useState(1);
@@ -293,7 +292,6 @@ export default function EnhancedTable(props) {
   );
 
   const [ updateItem ] = useMutation(UPDATE_ITEM_MUTATION, {} );
-
   const [ deleteItem ] = useMutation(DELETE_ITEM_MUTATION, {} );
 
 
@@ -459,18 +457,18 @@ export default function EnhancedTable(props) {
                     </Table>
                     </TableContainer>
                     <TablePagination
-                    rowsPerPageOptions={[8,10]}
-                    component="div"
-                    count={rows.length}
-                    rowsPerPage={rowsPerPage}
-                    page={page}
-                    onPageChange={handleChangePage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
+                      rowsPerPageOptions={[5,8]}
+                      component="div"
+                      count={rows.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
                     />
                 </Paper>
                 <FormControlLabel
-                    control={<Switch checked={dense} onChange={handleChangeDense} />}
-                    label="Dense padding"
+                    control={<Switch color="default" checked={dense} onChange={handleChangeDense} />}
+                    label="Compact view"
                 />
             </div>
         </Grid>
