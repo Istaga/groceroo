@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = getenv('DJANGO_SECRET_KEY', 'django-insecure--%1g=)nc(m33im!lyzt0==smg!xm5d#c5=#2-^&*%uz(_5-khe')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = getenv('DEBUG', True)
+DEBUG = getenv('DEBUG', False)
 
 ALLOWED_HOSTS = ['bestgroceryappever.herokuapp.com', '127.0.0.1']
 
