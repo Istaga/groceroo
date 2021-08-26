@@ -19,5 +19,4 @@ Go to root directory `cd ..` and run
 
 ##### TODO
 
-- Add 'notes' field to item
 - Join room via URL e.g. `bestgroceryappever.herokuapp.com/rooms/ABCDEFG`
