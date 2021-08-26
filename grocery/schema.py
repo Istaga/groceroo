@@ -101,7 +101,7 @@ class GroceriesCreation(graphene.Mutation):
 
     @classmethod
     def mutate(cls, root, info, code, title):
-        if( type(code) is not str or len(code) != 8 ):
+        if( type(code) is not str or len(code) != 7 ):
             code = generate_unique_code()
 
         groceries = Groceries.objects.create(title=title, code=code)
