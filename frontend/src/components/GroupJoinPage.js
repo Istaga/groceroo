@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
 const JoinGroupPage = (props) => {
     const classes = useStyles();
     const [title, setTitle] = useState("No list found.");
-    const [retrievedCode, setCode] = useState("HRRCOAC");
+    const [retrievedCode, setCode] = useState("UOBWMDD");
     const [itemList, setItemList] = useState([]);
     const [targetValid, setTargetValid] = useState(false);
     const codeFieldRef = useRef();
@@ -163,7 +163,7 @@ const JoinGroupPage = (props) => {
                         defaultValue={retrievedCode}
                     />
                     <FormHelperText text-align="center">
-                        Use the 7-character code here. Try "HRRCOAC"
+                        Use the 7-character code here. Try "UOBWMDD"
                     </FormHelperText>
                 </FormControl>
             </Grid>
