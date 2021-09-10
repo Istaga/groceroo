@@ -185,5 +185,5 @@ resource "aws_lightsail_instance" "django_test" {
 }
 
 output "django_test" {
-    value = django_test.name
+    value = aws_lightsail_instance.django_test.name
 }
