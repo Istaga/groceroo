@@ -1,0 +1,91 @@
+query showGroceryLists {
+  allGroceries{
+    id
+    title
+    code
+  }
+}
+
+query findSpecificList ($code: String = "SDJOSH") {
+  pacificRoom(code: $code){
+    id
+    title
+    code
+  }
+}
+
+mutation updateGroceriesTitle ($code: String = "SDJOSH", $title: String = "List for Rich Piana") {
+  updateGroceriesTitle(code: $code, title: $title){
+    groceries {
+      code
+      title
+    }
+  }
+}
+
+mutation deleteGroceries($code: String = "SDJOSH"){
+  deleteGroceries(code: $code){
+    groceries {
+      id
+      code
+      title
+    }
+  }
+}
+
+mutation createGroceries($code: String = "JAAAHN", $title: String = "Chinese stuff"){
+  createGroceries(code: $code, title: $title) {
+    groceries {
+      title
+      id
+      code
+    }
+  }
+}
+
+
+query showAllItems {
+  allItems {
+    id
+    name
+    quantity
+    units
+  }
+}
+
+mutation createItem($name: String = "Milk", $quantity: Float = 1, $units: String = "LITERS"){
+  createItem(name: $name, quantity: $quantity, units: $units){
+    item {
+      name
+      quantity
+      units
+    }
+  }
+}
+
+mutation updateItem($id: ID = "5", $name: String = "Milk", $quantity: Float = 300.07, $units: String = "milliliters"){
+  updateItem(id: $id, name: $name, quantity: $quantity, units: $units){
+    item {
+      id
+      name
+      quantity
+      units
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
