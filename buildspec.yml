@@ -15,7 +15,7 @@ phases:
 
   build:
     commands:
-      - terraform $TF_COMMAND -auto-approve
+      - terraform $TF_COMMAND --auto-approve
 
   post_build:
     commands:
