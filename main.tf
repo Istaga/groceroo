@@ -184,6 +184,6 @@ resource "aws_lightsail_instance" "django_test" {
   }
 }
 
-output "please" {
+output "django_test" {
     value = django_test.name
 }
