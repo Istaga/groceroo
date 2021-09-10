@@ -20,3 +20,4 @@ Go to root directory `cd ..` and run
 ##### TODO
 
 - Join room via URL e.g. `bestgroceryappever.herokuapp.com/rooms/ABCDEFG`
+- Migrate to AWS w/Terraform
